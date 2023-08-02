@@ -557,7 +557,7 @@ class TwoStageFeatureSelector:
 
     def get_init_metric(self, pred, label):
         if self.metric == 'binary_logloss':
-            init_metric = log_loss(label, scipy.special.expit(pred), labels=[0, 1])
+            init_metric = log_loss(label, scipy.special.expit(pred), labels=[0, 1], sample_weight=1.0/np.bincount(label)[label], eps=1e-15)
         elif self.metric == 'multi_logloss':
             init_metric = log_loss(label, scipy.special.softmax(pred, axis=1),
                                    labels=list(range(pred.shape[1])))
